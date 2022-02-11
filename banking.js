@@ -1,49 +1,40 @@
 
-function getInputValue() {
-    const depositInput = document.getElementById('deposit');
-    const depositAmount = depositInput.value;
+function getInputValue(inputID) {
+    const inputField = document.getElementById(inputID);
+    const inputAmount = inputField.value;
     //clear input field----------------------
-    depositInput.value = '';
-
-    return depositAmount;
+    inputField.value = '';
+    return inputAmount;
 }
-
+function updateTotal(totalFieldId, amount) {
+    debugger;
+    const prevTotal = document.getElementById(totalFieldId);
+    const prevTotalText = prevTotal.innerText;
+    prevTotal.innerText = parseFloat(prevTotalText) + parseFloat(amount);
+    return prevTotalText;
+}
 
 //-----------------------------------------------------------------------------------------
 document.getElementById('deposit-baton').addEventListener('click', function () {
-    // const depositInput = document.getElementById('deposit');
-    // const depositAmount = depositInput.value;
-    const depositAmount = getInputValue();
+    const depositAmount = getInputValue('deposit');
+    // update corresponding chart---------------------------
+    updateTotal('deposit-total', depositAmount);
 
-    // get current deposit amount and add with previous-------------
-    const depositTotal = document.getElementById('deposit-total');
-    const depositTotalText = depositTotal.innerText;
-    depositTotal.innerText = parseFloat(depositTotalText) + parseFloat(depositAmount);
-
-    //update account balance----------------------------------------
+    //update account balance-------------------------------------
     const balanceTotal = document.getElementById('balance');
     const balanceTotalText = balanceTotal.innerText;
     balanceTotal.innerText = parseFloat(balanceTotalText) + parseFloat(depositAmount);
 
-    //clear input field----------------------
-    // depositInput.value = '';
 })
 
 document.getElementById('withdraw-baton').addEventListener('click', function () {
-    const withdrawInput = document.getElementById('withdraw');
-    const withdrawAmount = withdrawInput.value;
-
-    // get current withdraw amount and subtract with previous-------------
-    const withdrawTotal = document.getElementById('withdraw-total');
-    const withdrawTotalText = withdrawTotal.innerText;
-    withdrawTotal.innerText = parseFloat(withdrawTotalText) + parseFloat(withdrawAmount);
+    const withdrawAmount = getInputValue('withdraw');
+    // update corresponding chart---------------------------
+    updateTotal('withdraw-total', withdrawAmount);
 
     //update account balance----------------------------------------
     const balanceTotal = document.getElementById('balance');
     const balanceTotalText = balanceTotal.innerText;
     balanceTotal.innerText = parseFloat(balanceTotalText) - parseFloat(withdrawAmount);
-
-    //clear input field----------------------
-    withdrawInput.value = '';
 })
 
