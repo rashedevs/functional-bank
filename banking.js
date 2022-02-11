@@ -13,27 +13,40 @@ function updateTotal(totalFieldId, amount) {
     prevTotal.innerText = parseFloat(prevTotalText) + parseFloat(amount);
     return prevTotalText;
 }
-function updateBalance(reqAmount, isAdd) {
+function getCurrentBalance() {
     const balanceTotal = document.getElementById('balance');
     const balanceTotalText = balanceTotal.innerText;
+    const prevBalance = parseFloat(balanceTotalText);
+    return prevBalance;
+}
+function updateBalance(reqAmount, isAdd) {
+    const balanceTotal = document.getElementById('balance');
+    const balanceTotalText = getCurrentBalance();
     if (isAdd == true) {
-        balanceTotal.innerText = parseFloat(balanceTotalText) + parseFloat(reqAmount);
+        balanceTotal.innerText = balanceTotalText + parseFloat(reqAmount);
     }
-    else { balanceTotal.innerText = parseFloat(balanceTotalText) - parseFloat(reqAmount); }
+    else { balanceTotal.innerText = balanceTotalText - parseFloat(reqAmount); }
 }
 
 //-----------------------------------------------------------------------------------------
 document.getElementById('deposit-baton').addEventListener('click', function () {
     const depositAmount = getInputValue('deposit');
     // update corresponding chart---------------------------
-    updateTotal('deposit-total', depositAmount);
-    //update account balance--------------------------------
-    updateBalance(depositAmount, true);
+    if (depositAmount > 0) {
+        updateTotal('deposit-total', depositAmount);
+        //update account balance--------------------------------
+        updateBalance(depositAmount, true);
+    }
+    else { alert('Enter a positive amount.') }
 })
 
 document.getElementById('withdraw-baton').addEventListener('click', function () {
     const withdrawAmount = getInputValue('withdraw');
-    updateTotal('withdraw-total', withdrawAmount);
-    updateBalance(withdrawAmount, false);
+    const currentBalance = getCurrentBalance();
+    if (withdrawAmount > 0 && withdrawAmount < currentBalance) {
+        updateTotal('withdraw-total', withdrawAmount);
+        updateBalance(withdrawAmount, false);
+    }
+    else { alert('Enter a positive-valid amount.') }
 })
 
